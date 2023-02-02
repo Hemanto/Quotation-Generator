@@ -14,8 +14,9 @@ async function getQuotes() {
   try {
     const response = await fetch(api);
     const data = await response.json();
-    // console.log(data);
-    quotAuthor.innerText = heelo;
+    console.log(data);
+    quotAuthor.innerText = data.quoteAuthor;
+    quotationText.innerText = data.quoteText;
   } catch (error) {
     getQuotes();
   }
