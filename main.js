@@ -1,34 +1,18 @@
-const quotationContainer = document.getElementById("quotationContainer");
-const quotationText = document.getElementById("quotationText");
+const videoElement = document.getElementById("video");
+const button = document.getElementById("button");
 
-const btnTwitter = document.getElementById("btnTwitter");
-const newQutBtn = document.getElementById("newQutBtn");
+//Promt to slect media stream , pass to video element then play
 
-const quotAuthor = document.getElementById("quoteAuthor");
-console.log(quotAuthor);
-
-async function getQuotes() {
-  const proxy = "https://www.sitelike.org/similar/cors-anywhere.herokuapp.com/";
-  const api =
-    "https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json";
+async function selectMediaStrem() {
   try {
-    const response = await fetch(api);
-    const data = await response.json();
-    console.log(data);
-    quotAuthor.innerText = data.quoteAuthor;
-    quotationText.innerText = data.quoteText;
+    const mediaStrem = await navigator.mediaDevices.getDisplayMedia();
+    videoElement.srcObject = mediaStrem;
+    videoElement.onloadedmetadata = () => {
+      videoElement.onplay();
+    };
   } catch (error) {
-    getQuotes();
+    console.log(error);
   }
 }
 
-function tweetQuote() {
-  console.log("clcik");
-  const quote = quotationText.innerText;
-  const author = quotAuthor.innerText;
-  const twitterUrl = `https://twitter.com/intent/tweet?text=${quote} - ${author}`;
-  window.open(twitterUrl, "_blank");
-}
-newQutBtn.addEventListener("click", getQuotes);
-btnTwitter.addEventListener("click", tweetQuote);
-getQuotes();
+selectMediaStrem();
